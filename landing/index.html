@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Andika&family=Baloo+2:wght@600;700;800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add(/Android/i.test(navigator.userAgent) ? "android" : "ios");</script>
 </head>
 <body>
 
@@ -25,14 +26,36 @@
       </a>
       <h1>Tu hijo va a entender lo que lee. <em>5 minutos al día.</em></h1>
       <p class="lead">Lecturas cortas sobre lo que le gusta, preguntas que lo hacen pensar y una racha que lo motiva a volver cada día. Para niños de 1.º a 6.º básico.</p>
-      <a class="btn" href="#lista">Quiero ser de los primeros <span aria-hidden="true">→</span></a>
+      <div class="get ios-only">
+        <a class="appstore" href="https://apps.apple.com/cl/app/id6829563453" data-place="hero"><img src="img/app-store-badge-es.svg" width="162" height="54" alt="Descárgalo en el App Store"></a>
+        <p class="small">Gratis por 7 días con el plan anual. Para iPhone y iPad.</p>
+      </div>
+      <div class="android-box android-only">
+        <h3>Por ahora Yeyi es solo para iPhone y iPad.</h3>
+        <p>¿Tienes Android? Déjanos tu correo y te avisamos cuando salga.</p>
+      <form class="form waitlist" novalidate>
+        <label>Tu correo<input name="email" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" required></label>
+        <label>Curso de tu hijo o hija
+        <select name="curso" required>
+          <option value="" selected disabled>Elige el curso</option>
+          <option value="1">1.º básico</option>
+          <option value="2">2.º básico</option>
+          <option value="3">3.º básico</option>
+          <option value="4">4.º básico</option>
+          <option value="5">5.º básico</option>
+          <option value="6">6.º básico</option>
+        </select></label>
+        <p class="error" role="alert" hidden></p>
+        <button class="btn" type="submit">Avísame cuando salga en Android</button>
+      </form>
+      <div class="done" hidden><strong>¡Listo!</strong><p>Te avisamos cuando Yeyi salga en Android.</p></div>
+      </div>
     </div>
 
     <div class="phone" aria-hidden="true">
       <div class="phone-top">
         <span class="phone-back">←</span>
         <span class="phone-title">Tiburones</span>
-        <span class="pill pill-blue"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path d="M11 5.5a3.5 3.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Escuchar</span>
       </div>
       <div class="progress"><i class="on"></i><i></i><i></i><i></i></div>
       <div class="notebook">
@@ -67,7 +90,7 @@
           </div>
         </div>
         <h3>Responde 4 preguntas</h3>
-        <p>Una por pantalla, con alternativas grandes. Puede escucharlas si todavía lee lento.</p>
+        <p>Una por pantalla, con alternativas grandes.</p>
       </article>
       <article class="card card-yellow">
         <div class="card-head">
@@ -88,7 +111,7 @@
   <div class="wrap parent-grid">
     <div class="parent-copy">
       <span class="badge"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="#FFC530" stroke="#1E1B3A" stroke-width="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="#1E1B3A" stroke-width="1.5"/></svg> Para el papá y la mamá</span>
-      <h2>Recibe cada domingo cuántos días leyó, cuánto entendió y qué le cuesta.</h2>
+      <h2>Mira cada domingo cuántos días leyó, cuánto entendió y qué le cuesta.</h2>
       <p>Sin tener que pelearle ni sentarte al lado. Y si quieres, lo compartes con la familia o el colegio.</p>
     </div>
     <div class="summary" aria-hidden="true">
@@ -122,37 +145,50 @@
         <p>Hasta 3 hijos.</p>
       </div>
     </div>
-    <p class="note">Cancelas cuando quieras. Disponible pronto en iPhone y iPad.</p>
+    <p class="note">Cancelas cuando quieras. Disponible en iPhone y iPad.</p>
   </div>
 </section>
 
-<section class="band band-white" id="lista">
+<section class="band band-white" id="descargar">
   <div class="wrap signup">
     <svg class="big-lupa" viewBox="0 0 60 60" aria-hidden="true"><circle cx="24" cy="24" r="16" fill="#FDF0C4" stroke="#1E1B3A" stroke-width="4"/><path d="M15 21a10 10 0 0 1 8-8" fill="none" stroke="#3BA8FF" stroke-width="4" stroke-linecap="round"/><line x1="36" y1="36" x2="52" y2="50" stroke="#FF5A3C" stroke-width="6" stroke-linecap="round"/></svg>
-    <h2>Sé de los primeros en probar Yeyi</h2>
-    <p>Te avisamos el día del lanzamiento y te contamos cómo sacarle partido. Puedes darte de baja cuando quieras.</p>
-    <form class="form" id="waitlist" novalidate>
-      <label for="email">Tu correo</label>
-      <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" required>
-      <label for="curso">Curso de tu hijo o hija</label>
-      <select id="curso" name="curso" required>
-        <option value="" selected disabled>Elige el curso</option>
-        <option value="1">1.º básico</option>
-        <option value="2">2.º básico</option>
-        <option value="3">3.º básico</option>
-        <option value="4">4.º básico</option>
-        <option value="5">5.º básico</option>
-        <option value="6">6.º básico</option>
-      </select>
-      <p class="error" id="error" role="alert" hidden></p>
-      <button class="btn" type="submit">Quiero ser de los primeros <span aria-hidden="true">→</span></button>
-    </form>
-    <div class="done" id="done" hidden>
-      <strong>¡Listo!</strong>
-      <p>Te avisaremos apenas Yeyi esté disponible.</p>
+    <div class="get get-center ios-only">
+      <h2>Empieza hoy. La primera lectura toma 5 minutos.</h2>
+      <a class="appstore" href="https://apps.apple.com/cl/app/id6829563453" data-place="cierre"><img src="img/app-store-badge-es.svg" width="162" height="54" alt="Descárgalo en el App Store"></a>
+      <p class="small">Gratis por 7 días con el plan anual. Para iPhone y iPad.</p>
+      <ol class="how">
+        <li><span class="n n1">1</span>Descarga Yeyi.</li>
+        <li><span class="n n2">2</span>Crea la cuenta y el perfil de tu hijo o hija.</li>
+        <li><span class="n n3">3</span>Tu hijo o hija hace una prueba corta y Yeyi elige su nivel.</li>
+      </ol>
     </div>
+    <div class="android-box android-only">
+        <h3>Por ahora Yeyi es solo para iPhone y iPad.</h3>
+        <p>¿Tienes Android? Déjanos tu correo y te avisamos cuando salga.</p>
+      <form class="form waitlist" novalidate>
+        <label>Tu correo<input name="email" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" required></label>
+        <label>Curso de tu hijo o hija
+        <select name="curso" required>
+          <option value="" selected disabled>Elige el curso</option>
+          <option value="1">1.º básico</option>
+          <option value="2">2.º básico</option>
+          <option value="3">3.º básico</option>
+          <option value="4">4.º básico</option>
+          <option value="5">5.º básico</option>
+          <option value="6">6.º básico</option>
+        </select></label>
+        <p class="error" role="alert" hidden></p>
+        <button class="btn" type="submit">Avísame cuando salga en Android</button>
+      </form>
+      <div class="done" hidden><strong>¡Listo!</strong><p>Te avisamos cuando Yeyi salga en Android.</p></div>
+      </div>
   </div>
 </section>
+
+<div class="sticky ios-only" id="sticky" aria-hidden="true">
+  <div><b>Yeyi en el App Store</b><small>7 días gratis con el plan anual</small></div>
+  <a class="appstore" href="https://apps.apple.com/cl/app/id6829563453" data-place="barra"><img src="img/app-store-badge-es.svg" width="162" height="54" alt="Descárgalo en el App Store"></a>
+</div>
 
 <footer class="band band-paper">
   <div class="wrap foot">

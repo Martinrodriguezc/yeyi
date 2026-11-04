@@ -145,6 +145,30 @@ footer.band { border-bottom: 0; padding: 28px 0; }
 .done { width: min(460px, 100%); margin-top: 18px; padding: 28px 20px; background: #D7F5E6; border: 2.5px solid var(--tinta); border-radius: 22px; box-shadow: 6px 7px 0 var(--tinta); }
 .done strong { font: 800 26px/1.2 var(--display); }
 
+/* App Store (landing v2). Apple's badge as-is: 54 px tall, 14 px clear around it. */
+html.android .ios-only, html:not(.android) .android-only { display: none !important; }
+.get { display: grid; gap: 6px; justify-items: start; }
+.get-center { justify-items: center; gap: 12px; }
+.appstore { display: inline-block; padding: 14px; margin: -14px; line-height: 0; }
+.appstore img { height: 54px; width: auto; }
+.small { font-size: 14px; color: var(--gris); margin: 0; }
+.how { list-style: none; margin: 18px 0 0; padding: 24px 20px; width: min(460px, 100%); display: grid; gap: 18px; text-align: left; background: var(--papel); border: 2.5px solid var(--tinta); border-radius: 22px; box-shadow: 6px 7px 0 var(--tinta); font-size: 17px; }
+.how li { display: flex; align-items: center; gap: 16px; }
+.how .n { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border: 2.5px solid var(--tinta); border-radius: 50%; font: 800 19px/1 var(--display); }
+.n1 { background: var(--girasol); } .n2 { background: #FF7AC6; } .n3 { background: var(--pasto); }
+.android-box { width: min(460px, 100%); display: grid; gap: 8px; text-align: left; padding: 24px 20px; background: var(--azul-suave); border: 2.5px solid var(--tinta); border-radius: 22px; box-shadow: 6px 7px 0 var(--tinta); }
+.android-box h3 { font-size: 22px; }
+.android-box .form { margin: 4px 0 0; padding: 0; background: none; border: 0; box-shadow: none; }
+.form label { display: grid; gap: 8px; }
+.sticky { display: none; }
+@media (max-width: 760px) {
+  .sticky.visible { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: fixed; inset: auto 0 0; z-index: 10; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--papel); border-top: 2.5px solid var(--tinta); }
+  .sticky b { display: block; font: 800 17px/1.2 var(--display); }
+  .sticky small { font: 400 13px/1.3 var(--ui); color: var(--gris); }
+  .sticky .appstore img { height: 48px; }
+  body.con-barra { padding-bottom: 92px; }
+}
+
 /* Footer */
 .foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--gris); }
 
