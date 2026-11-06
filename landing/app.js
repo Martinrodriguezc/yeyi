@@ -3,6 +3,7 @@ const CONFIG = {
   SUPABASE_URL: "https://qzwobsvxryuteguyorcn.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_26BkxnwbJXWB_Y6tFtLQSA_TAqQFiOh", // publishable key, safe in the browser
   META_PIXEL_ID: "29036682759305427", // dataset "Yeyi landing"
+  POSTHOG_KEY: "phc_qhC7DmUjptGrHVCPNiALFqYx35rxUxaxLpAX3wm83s3k", // same project as the app: ad → landing → app in one funnel
 };
 
 // Meta pixel: loads only when an id is set.
@@ -15,11 +16,23 @@ if (CONFIG.META_PIXEL_ID && !LOCAL) {
   fbq("track", "PageView");
 }
 
+// PostHog (US cloud): page views with their utm_*, how far down people read ($pageleave), store taps.
+// No autocapture and no session recording; anonymous visitors don't get person profiles.
+if (CONFIG.POSTHOG_KEY && !LOCAL) {
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init(CONFIG.POSTHOG_KEY, { api_host: "https://us.i.posthog.com", person_profiles: "identified_only", autocapture: false, disable_session_recording: true });
+  posthog.register({ source: "landing", android: document.documentElement.classList.contains("android") });
+}
+const ph = (event, props) => window.posthog && posthog.capture(event, props);
+
 const params = new URLSearchParams(location.search);
 
 // App Store badge: the campaign optimizes for this tap (custom conversion on "DescargarApp").
 document.querySelectorAll(".appstore").forEach((a) =>
-  a.addEventListener("click", () => window.fbq && fbq("trackCustom", "DescargarApp", { placement: a.dataset.place })));
+  a.addEventListener("click", () => {
+    if (window.fbq) fbq("trackCustom", "DescargarApp", { placement: a.dataset.place });
+    ph("store_tapped", { placement: a.dataset.place });
+  }));
 
 // Mobile bar: only while neither the hero nor the closing section (each with its own badge) is on screen.
 const sticky = document.getElementById("sticky");
@@ -48,6 +61,7 @@ document.querySelectorAll("form.waitlist").forEach((form) => {
     try {
       await save({ email, curso, utm_source: params.get("utm_source"), utm_campaign: params.get("utm_campaign"), utm_content: params.get("utm_content") });
       if (window.fbq) fbq("track", "Lead", { content_category: `curso_${curso}` });
+      ph("android_waitlist_joined", { curso });
       form.hidden = true;
       form.nextElementSibling.hidden = false;
     } catch {
