@@ -4,6 +4,7 @@ const CONFIG = {
   SUPABASE_ANON_KEY: "sb_publishable_26BkxnwbJXWB_Y6tFtLQSA_TAqQFiOh", // publishable key, safe in the browser
   META_PIXEL_ID: "29036682759305427", // dataset "Yeyi landing"
   POSTHOG_KEY: "phc_qhC7DmUjptGrHVCPNiALFqYx35rxUxaxLpAX3wm83s3k", // same project as the app: ad → landing → app in one funnel
+  APP_STORE_PT: "", // App Store Connect provider token (Analytics → Campaigns); empty = links stay untagged
 };
 
 // Meta pixel: loads only when an id is set.
@@ -23,16 +24,24 @@ if (CONFIG.POSTHOG_KEY && !LOCAL) {
   posthog.init(CONFIG.POSTHOG_KEY, { api_host: "https://us.i.posthog.com", person_profiles: "identified_only", autocapture: false, disable_session_recording: true });
   posthog.register({ source: "landing", android: document.documentElement.classList.contains("android") });
 }
+const params = new URLSearchParams(location.search);
 const ph = (event, props) => window.posthog && posthog.capture(event, props);
 
-const params = new URLSearchParams(location.search);
 
 // App Store badge: the campaign optimizes for this tap (custom conversion on "DescargarApp").
-document.querySelectorAll(".appstore").forEach((a) =>
-  a.addEventListener("click", () => {
+// ct = the ad (utm_content) so App Store Connect shows downloads per ad.
+const ct = ("landing-" + (params.get("utm_content") || "directo")).replace(/[^\w-]/g, "").slice(0, 40);
+document.querySelectorAll(".appstore").forEach((a) => {
+  if (CONFIG.APP_STORE_PT) a.href += `?pt=${CONFIG.APP_STORE_PT}&ct=${ct}&mt=8`;
+  a.addEventListener("click", (e) => {
     if (window.fbq) fbq("trackCustom", "DescargarApp", { placement: a.dataset.place });
-    ph("store_tapped", { placement: a.dataset.place });
-  }));
+    if (!window.posthog?.__loaded) return;
+    // iOS leaves for the App Store at once and the batched event never went out: beacon it, then go.
+    posthog.capture("store_tapped", { placement: a.dataset.place, ad: params.get("utm_content") }, { transport: "sendBeacon", send_instantly: true });
+    e.preventDefault();
+    setTimeout(() => { location.href = a.href; }, 250);
+  });
+});
 
 // Mobile bar: only while neither the hero nor the closing section (each with its own badge) is on screen.
 const sticky = document.getElementById("sticky");
