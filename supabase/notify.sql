@@ -13,7 +13,7 @@ begin
     headers := jsonb_build_object('Authorization', 'Bearer ' || api_key, 'Content-Type', 'application/json'),
     body := jsonb_build_object(
       'from', 'Yeyi avisos <martin@prospexia.cl>',
-      'to', jsonb_build_array('rodriguez.martin25@gmail.com'),
+      'to', jsonb_build_array('martin.rodriguez@uc.cl'),
       'subject', format('Yeyi: nuevo registro #%s (%s.º básico)', total, new.curso),
       'text', format(E'Correo: %s\nCurso: %s.º básico\nAnuncio: %s\nCampaña: %s\nFuente: %s\nFecha: %s\n\nTotal en la lista: %s',
         new.email, new.curso, coalesce(new.utm_content, '(sin utm)'), coalesce(new.utm_campaign, '-'),
