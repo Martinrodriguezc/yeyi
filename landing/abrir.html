@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Abriendo Yeyi</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=2">
+<style>
+  /* Bridge from emails (11-23): mail apps block yeyi:// links, so the email points here and this page opens
+     the app; without the app, the App Store. Design: Downloads/yeyi-segunda-oportunidad, pantalla 6. */
+  body { background: #FFF7E8; }
+  .open { max-width: 420px; padding: 28px 24px 56px; display: grid; gap: 28px; }
+  .card { background: #FFC530; border: 3px solid #1E1B3A; border-radius: 26px; box-shadow: 7px 8px 0 #1E1B3A; transform: rotate(-1deg);
+          padding: 34px 20px 30px; display: grid; justify-items: center; gap: 16px; text-align: center; position: relative; }
+  .card::before { content: ""; position: absolute; top: -12px; left: 50%; width: 86px; height: 24px; margin-left: -43px; background: #FF9AC8;
+                  border: 2.5px solid #1E1B3A; transform: rotate(3deg); }
+  .lupa-box { width: 92px; height: 92px; border: 3px solid #1E1B3A; border-radius: 22px; background: #fff; display: grid; place-items: center; }
+  .card h1 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 34px; line-height: 1.1; margin: 0; color: #1E1B3A; }
+  .dots span { animation: blink 1.2s infinite; } .dots span:nth-child(2) { animation-delay: .2s; } .dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+  .more { display: grid; justify-items: center; gap: 14px; opacity: 0; transition: opacity .3s; text-align: center; }
+  .more.show { opacity: 1; }
+  .more p { margin: 0; font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 16px; color: #1E1B3A; }
+  .retry { font-family: 'Lexend', sans-serif; font-weight: 600; font-size: 15px; color: #1E1B3A; text-decoration: underline; padding: 12px; }
+  @media (min-width: 700px) { .open { padding-top: 72px; } .logo { justify-self: center; } }
+</style>
+</head>
+<body>
+<main class="wrap open">
+  <a class="logo" href="/" aria-label="Yeyi"><span>Yeyı</span><svg class="logo-lupa" viewBox="0 0 24 24" aria-hidden="true"><line x1="14" y1="9" x2="21" y2="2" stroke="#FF5A3C" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="13" r="6" fill="#FFC530" stroke="#1E1B3A" stroke-width="2.5"/></svg></a>
+  <div class="card">
+    <div class="lupa-box"><svg width="54" height="54" viewBox="0 0 24 24" aria-hidden="true"><line x1="14" y1="9" x2="21" y2="2" stroke="#FF5A3C" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="13" r="6" fill="#FFC530" stroke="#1E1B3A" stroke-width="2.5"/></svg></div>
+    <h1>Abriendo Yeyi<span class="dots"><span>.</span><span>.</span><span>.</span></span></h1>
+  </div>
+  <div class="more" id="more" aria-live="polite">
+    <p>¿Todavía no tienes Yeyi?</p>
+    <a id="store" href="https://apps.apple.com/app/id6829563453"><img src="img/app-store-badge-es.svg" alt="Descárgalo en el App Store" width="200" height="66"></a>
+    <a class="retry" id="retry" href="#">¿No se abrió? Toca aquí</a>
+  </div>
+</main>
+<script>
+  // Only a uuid goes into the app link: ?lead=… comes from the email, but anyone can edit a URL.
+  var q = new URLSearchParams(location.search), lead = q.get('lead') || '';
+  var app = /^[0-9a-f-]{36}$/i.test(lead) ? 'yeyi://pago?src=recovery&lead=' + lead : 'yeyi://pago?src=recovery';
+  var store = document.getElementById('store');
+  store.href += '?ct=' + encodeURIComponent(q.get('utm_campaign') || 'abrir');
+  function open() { location.href = app; }
+  document.getElementById('retry').addEventListener('click', function (e) { e.preventDefault(); open(); });
+  open();
+  // The app opened = this page went to the background; otherwise, after 2 s, offer the App Store.
+  setTimeout(function () { if (!document.hidden) document.getElementById('more').classList.add('show'); }, 2000);
+</script>
+</body>
+</html>
